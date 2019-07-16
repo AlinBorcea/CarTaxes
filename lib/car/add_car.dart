@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
-import '../data.dart';
+import 'package:car_taxes/database/firestore_helper.dart';
 import 'car.dart';
-
 
 class AddCar extends StatefulWidget {
   @override
@@ -14,7 +13,6 @@ class AddCarState extends State<AddCar> {
   final TextEditingController brandController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController yearController = TextEditingController();
-  final TextEditingController colorController = TextEditingController();
   Color carColor = Colors.blue;
 
   @override
@@ -54,13 +52,13 @@ class AddCarState extends State<AddCar> {
                 setState(() {
                   carColor = color;
                 });
-
+                addCar(Car(brandController.text, nameController.text,
+                    yearController.text, carColor));
               },
             ),
             RaisedButton(
               child: Text('Save car'),
               onPressed: () {
-                carList.add(Car(brandController.text, nameController.text, yearController.text, carColor));
               },
             ),
           ],
@@ -68,4 +66,5 @@ class AddCarState extends State<AddCar> {
       ),
     );
   }
+
 }

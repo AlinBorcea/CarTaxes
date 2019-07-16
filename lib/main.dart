@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'car/add_car.dart';
-import 'data.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'tax/list_taxes.dart';
 
 void main() => runApp(MyApp());
@@ -32,6 +32,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  final String carCollectionName = 'Cars';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,38 +43,28 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.blue,
       ),
       body: Center(
-        child: ListView.builder(
-          itemCount: carList.length,
-          itemBuilder: (context, index) => GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamed('/ListTax');
-            },
-            child: Card(
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.local_car_wash,
-                    color: carList[index].color,
-                    size: 64.0,
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Text(
-                        '${carList[index].brand} ${carList[index].name}',
-                        textAlign: TextAlign.start,
-                        textScaleFactor: 2.0,
-                      ),
-                      Text(
-                        '${carList[index].year}',
-                        textAlign: TextAlign.start,
-                        textScaleFactor: 2.0,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+        child: StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance.collection(carCollectionName).snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError)
+              return Text('Error ${snapshot.error}');
+
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return Text('Loading...');
+
+              default:
+                return ListView(
+                  children: snapshot.data.documents.map((DocumentSnapshot document) {
+                    return ListTile(
+                      title: Text('${document['brand']} ${document['name']}'),
+                      subtitle: Text(document['year']),
+                    );
+                  }).toList(),
+                );
+            }
+
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(

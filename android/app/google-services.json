@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "977174288464",
+    "firebase_url": "https://car-taxes.firebaseio.com",
+    "project_id": "car-taxes",
+    "storage_bucket": "car-taxes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977174288464:android:e7168d2bc612f7b5",
+        "android_client_info": {
+          "package_name": "com.apps.alin.car_taxes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "977174288464-o63ak01k2rhb51ad4onr05flcdhu16bv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7N61s0eZio02DZO2J5epCjopkdCxA2r0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "977174288464-o63ak01k2rhb51ad4onr05flcdhu16bv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
