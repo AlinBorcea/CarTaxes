@@ -1,11 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'car/add_car.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'tax/list_taxes.dart';
+import 'app_strings.dart';
 
-void main() => runApp(MyApp());
+main() => runApp(Cars());
 
-class MyApp extends StatelessWidget {
+class Cars extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,28 +13,24 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Cars'),
-      routes: <String, WidgetBuilder> {
+      home: CarsPage(title: 'Cars'),
+      routes: <String, WidgetBuilder>{
         '/AddCar': (BuildContext context) => AddCar(),
-        '/ListTax': (BuildContext context) => ListTax(),
       },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class CarsPage extends StatefulWidget {
+  CarsPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _CarsPageState createState() => _CarsPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-
-  final String carCollectionName = 'Cars';
-
+class _CarsPageState extends State<CarsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,9 +41,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: StreamBuilder<QuerySnapshot>(
           stream: Firestore.instance.collection(carCollectionName).snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError)
-              return Text('Error ${snapshot.error}');
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) return Text('Error ${snapshot.error}');
 
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
@@ -55,15 +51,28 @@ class _MyHomePageState extends State<MyHomePage> {
 
               default:
                 return ListView(
-                  children: snapshot.data.documents.map((DocumentSnapshot document) {
-                    return ListTile(
-                      title: Text('${document['brand']} ${document['name']}'),
-                      subtitle: Text(document['year']),
+                  children:
+                      snapshot.data.documents.map((DocumentSnapshot document) {
+                    return Card(
+                      margin: EdgeInsets.all(8.0),
+                      elevation: 4.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: ListTile(
+                        enabled: true,
+                        leading: Icon(
+                          Icons.directions_car,
+                          color: Color(document[colorVal]),
+                        ),
+                        title:
+                            Text('${document[brandVal]} ${document[nameVal]}'),
+                        subtitle: Text(document[yearVal]),
+                      ),
                     );
                   }).toList(),
                 );
             }
-
           },
         ),
       ),

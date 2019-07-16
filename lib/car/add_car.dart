@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:car_taxes/database/firestore_helper.dart';
+import 'package:flutter/material.dart';
 import 'car.dart';
 
 class AddCar extends StatefulWidget {
@@ -24,6 +24,7 @@ class AddCarState extends State<AddCar> {
       ),
       body: Center(
         child: ListView(
+          physics: ScrollPhysics(),
           padding: EdgeInsets.all(8.0),
           children: <Widget>[
             TextField(
@@ -51,14 +52,15 @@ class AddCarState extends State<AddCar> {
               onColorChange: (Color color) {
                 setState(() {
                   carColor = color;
+                  print(carColor.hashCode);
                 });
-                addCar(Car(brandController.text, nameController.text,
-                    yearController.text, carColor));
               },
             ),
             RaisedButton(
               child: Text('Save car'),
               onPressed: () {
+                addCar(Car(brandController.text, nameController.text,
+                    yearController.text, carColor));
               },
             ),
           ],
