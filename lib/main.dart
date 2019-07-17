@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'tax/car_taxes.dart';
 import 'car/add_car.dart';
 import 'app_strings.dart';
+import 'car/car.dart';
 
 main() => runApp(Cars());
 
@@ -53,21 +55,28 @@ class _CarsPageState extends State<CarsPage> {
                 return ListView(
                   children:
                       snapshot.data.documents.map((DocumentSnapshot document) {
-                    return Card(
-                      margin: EdgeInsets.all(8.0),
-                      elevation: 4.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: ListTile(
-                        enabled: true,
-                        leading: Icon(
-                          Icons.directions_car,
-                          color: Color(document[colorVal]),
+                    return GestureDetector(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CarTaxes(Car(document.data[brandVal], document.data[nameVal], document.data[yearVal], Color(document.data[colorVal]))))),
+                      child: Card(
+                        margin: EdgeInsets.all(8.0),
+                        elevation: 4.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
-                        title:
-                            Text('${document[brandVal]} ${document[nameVal]}'),
-                        subtitle: Text(document[yearVal]),
+                        child: ListTile(
+                          enabled: true,
+                          leading: Icon(
+                            Icons.directions_car,
+                            color: Color(document[colorVal]),
+                          ),
+                          title: Text(
+                              '${document[brandVal]} ${document[nameVal]}'),
+                          subtitle: Text(document[yearVal]),
+                        ),
                       ),
                     );
                   }).toList(),

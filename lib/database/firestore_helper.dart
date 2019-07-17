@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:car_taxes/car/car.dart';
 import 'package:car_taxes/app_strings.dart';
+import 'package:car_taxes/car/car.dart';
+import 'package:car_taxes/tax/tax.dart';
 
 Future<void> addCar(Car car) async {
   Firestore.instance.collection(carCollectionName).document(car.name).setData({
@@ -11,4 +12,29 @@ Future<void> addCar(Car car) async {
   }).catchError((e) {
     print(e);
   });
+}
+
+Future<void> addTax(String collectionName, Tax tax) async {
+  Firestore.instance.collection(collectionName).document(tax.title).setData({
+    titleVal: tax.title,
+    descriptionVal: tax.description,
+    dateVal: getDate(tax.date.toString()),
+    timeVal: getTime(tax.time.toString()),
+  }).catchError((e){
+    print(e);
+  });
+}
+
+/// The structure is:
+/// 2 0 1 9 - 1 0 - 1 6 00:00:00.000
+/// 0 1 2 3 4 5 6 7 8 9
+getDate(String date) {
+  return date.substring(0, 10);
+}
+
+/// The structure is:
+/// T i m e O f D a y (  1  0  :  0  0  )
+/// 0 1 2 3 4 5 6 7 8 9 10 11 12 13  14 15
+getTime(String time) {
+  return time.substring(10, time.length - 1);
 }
