@@ -1,68 +1,78 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'settings/settings.dart';
 import 'tax/car_taxes.dart';
 import 'car/add_car.dart';
 import 'app_strings.dart';
+import 'app_colors.dart';
 import 'car/car.dart';
 
-main() => runApp(Cars());
+main() async {
 
-class Cars extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Car taxes',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: CarsPage(title: 'Cars'),
-      routes: <String, WidgetBuilder>{
-        '/AddCar': (BuildContext context) => AddCar(),
-      },
-    );
-  }
+  Color _appColor = await getCurrentColor();
+  runApp(MaterialApp(
+    title: 'Car taxes',
+    theme: ThemeData(
+      primarySwatch: _appColor,
+    ),
+    home: Cars(_appColor),
+  ));
 }
 
-class CarsPage extends StatefulWidget {
-  CarsPage({Key key, this.title}) : super(key: key);
+class Cars extends StatefulWidget {
+  final Color _appColor;
 
-  final String title;
+  Cars(this._appColor);
 
   @override
-  _CarsPageState createState() => _CarsPageState();
+  State createState() => _CarsState();
 }
 
-class _CarsPageState extends State<CarsPage> {
+class _CarsState extends State<Cars> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: chillWhite,
       appBar: AppBar(
         title: Text('Cars'),
-        backgroundColor: Colors.blue,
+        backgroundColor: widget._appColor,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.color_lens),
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Settings()));
+            },
+          )
+        ],
       ),
       body: Center(
         child: StreamBuilder<QuerySnapshot>(
           stream: Firestore.instance.collection(carCollectionName).snapshots(),
           builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) return Text('Error ${snapshot.error}');
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> _snapshot) {
+            if (_snapshot.hasError) return Text('Error ${_snapshot.error}');
 
-            switch (snapshot.connectionState) {
+            switch (_snapshot.connectionState) {
               case ConnectionState.waiting:
                 return Text('Loading...');
 
               default:
                 return ListView(
                   children:
-                      snapshot.data.documents.map((DocumentSnapshot document) {
+                      _snapshot.data.documents.map((DocumentSnapshot _document) {
                     return GestureDetector(
                       onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  CarTaxes(Car(document.data[brandVal], document.data[nameVal], document.data[yearVal], Color(document.data[colorVal]))))),
+                              builder: (context) => CarTaxes(Car(
+                                  _document.data[brandVal],
+                                  _document.data[nameVal],
+                                  _document.data[yearVal],
+                                  Color(_document.data[colorVal])), widget._appColor))),
                       child: Card(
-                        margin: EdgeInsets.all(8.0),
+                        margin: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 2.0),
                         elevation: 4.0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
@@ -71,11 +81,11 @@ class _CarsPageState extends State<CarsPage> {
                           enabled: true,
                           leading: Icon(
                             Icons.directions_car,
-                            color: Color(document[colorVal]),
+                            color: Color(_document[colorVal]),
                           ),
                           title: Text(
-                              '${document[brandVal]} ${document[nameVal]}'),
-                          subtitle: Text(document[yearVal]),
+                              '${_document[brandVal]} ${_document[nameVal]}'),
+                          subtitle: Text(_document[yearVal]),
                         ),
                       ),
                     );
@@ -86,9 +96,13 @@ class _CarsPageState extends State<CarsPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).pushNamed('/AddCar'),
+        onPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => AddCar(widget._appColor))),
         child: Icon(Icons.add),
       ),
     );
   }
 }
+
+/*
+ */
