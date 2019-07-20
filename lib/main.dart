@@ -1,4 +1,3 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'settings/settings.dart';
@@ -9,7 +8,6 @@ import 'app_colors.dart';
 import 'car/car.dart';
 
 main() async {
-
   Color _appColor = await getCurrentColor();
   runApp(MaterialApp(
     title: 'Car taxes',
@@ -60,17 +58,19 @@ class _CarsState extends State<Cars> {
 
               default:
                 return ListView(
-                  children:
-                      _snapshot.data.documents.map((DocumentSnapshot _document) {
+                  children: _snapshot.data.documents
+                      .map((DocumentSnapshot _document) {
                     return GestureDetector(
                       onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CarTaxes(Car(
-                                  _document.data[brandVal],
-                                  _document.data[nameVal],
-                                  _document.data[yearVal],
-                                  Color(_document.data[colorVal])), widget._appColor))),
+                              builder: (context) => CarTaxes(
+                                  Car(
+                                      _document.data[brandVal],
+                                      _document.data[nameVal],
+                                      _document.data[yearVal],
+                                      Color(_document.data[colorVal])),
+                                  widget._appColor))),
                       child: Card(
                         margin: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 2.0),
                         elevation: 4.0,
@@ -96,8 +96,8 @@ class _CarsState extends State<Cars> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AddCar(widget._appColor))),
+        onPressed: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => AddCar(widget._appColor))),
         child: Icon(Icons.add),
       ),
     );

@@ -25,6 +25,14 @@ Future<void> addTax(String collectionName, Tax tax) async {
   });
 }
 
+deleteCar(String name) {
+  Firestore.instance.collection(carCollectionName).document(name).delete();
+  Firestore.instance.collection(name).getDocuments().then((snapshot) {
+    for (DocumentSnapshot ds in snapshot.documents)
+      ds.reference.delete();
+  });
+}
+
 /// The structure is:
 /// 2 0 1 9 - 1 0 - 1 6 00:00:00.000
 /// 0 1 2 3 4 5 6 7 8 9
