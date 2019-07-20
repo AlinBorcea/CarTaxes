@@ -1,31 +1,46 @@
 import 'package:car_taxes/database/firestore_helper.dart';
 import 'package:car_taxes/app_colors.dart';
+import 'package:car_taxes/car/car.dart';
 import 'package:flutter/material.dart';
 import 'tax.dart';
 
-class AddTax extends StatefulWidget {
-  AddTax(this._collectionName, this._appColor);
+class EditTax extends StatefulWidget {
+  EditTax(this._collectionName, this._appBarTitle, this._appColor, this._tax);
 
   final String _collectionName;
+  final String _appBarTitle;
   final Color _appColor;
+  final Tax _tax;
 
   @override
-  State createState() => AddTaxState();
+  State createState() => EditTaxState();
 }
 
-class AddTaxState extends State<AddTax> {
+class EditTaxState extends State<EditTax> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
   DateTime _date = DateTime.now();
   TimeOfDay _time = TimeOfDay.now();
 
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget._tax != null) {
+      _titleController.text = widget._tax.title;
+      _descriptionController.text = widget._tax.description;
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: chillWhite,
       appBar: AppBar(
-        title: Text('Add tax'),
+        title: Text(widget._appBarTitle),
         backgroundColor: widget._appColor,
       ),
       body: Container(
@@ -57,11 +72,17 @@ class AddTaxState extends State<AddTax> {
               onPressed: () => selectTime(context),
             ),
             RaisedButton(
-              child: Text('Add tax'),
+              child: Text((widget._appBarTitle == 'Add task' ? widget._appBarTitle : 'Update tax')),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
               color: widget._appColor,
               onPressed: () {
-                addTax(widget._collectionName, Tax(_titleController.text, _descriptionController.text, _date, _time));
+
+                if (widget._tax == null)
+                  addTax(widget._collectionName,
+                      Tax(_titleController.text, _descriptionController.text, getDate(_date.toString()), getTime(_time.toString())));
+                else
+                  updateTax(widget._collectionName, Tax(_titleController.text, _descriptionController.text, getDate(_date.toString()), getTime(_time.toString())));
+
                 _titleController.text = '';
                 _descriptionController.text = '';
                 _date = null;

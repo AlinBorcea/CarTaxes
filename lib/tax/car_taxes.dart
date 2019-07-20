@@ -4,7 +4,8 @@ import 'package:car_taxes/app_strings.dart';
 import 'package:car_taxes/app_colors.dart';
 import 'package:car_taxes/car/car.dart';
 import 'package:flutter/material.dart';
-import 'add_tax.dart';
+import 'tax_editor.dart';
+import 'tax.dart';
 
 class CarTaxes extends StatefulWidget {
   CarTaxes(this._car, this._appColor);
@@ -74,6 +75,12 @@ class CarTaxesState extends State<CarTaxes> {
                   children:
                       snapshot.data.documents.map((DocumentSnapshot document) {
                     return GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return EditTax(widget._car.name, 'Edit tax',
+                              widget._appColor, Tax(document[titleVal], document[descriptionVal], document[dateVal], document[titleVal]));
+                        }));
+                      },
                       child: Card(
                         margin: EdgeInsets.all(8.00),
                         shape: RoundedRectangleBorder(
@@ -116,7 +123,8 @@ class CarTaxesState extends State<CarTaxes> {
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => AddTax(widget._car.name, widget._appColor)),
+              builder: (context) => EditTax(
+                  widget._car.name, 'Add task', widget._appColor, null)),
         ),
       ),
     );

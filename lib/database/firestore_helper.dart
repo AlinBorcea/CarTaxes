@@ -18,10 +18,20 @@ Future<void> addTax(String collectionName, Tax tax) async {
   Firestore.instance.collection(collectionName).document(tax.title).setData({
     titleVal: tax.title,
     descriptionVal: tax.description,
-    dateVal: getDate(tax.date.toString()),
-    timeVal: getTime(tax.time.toString()),
+    dateVal: tax.date,
+    timeVal: tax.time,
   }).catchError((e){
     print(e);
+  });
+}
+
+Future<void> updateTax(String collectionName, Tax tax) async {
+  Firestore.instance.collection(collectionName).document(tax.title)
+      .updateData({
+    titleVal: tax.title,
+    descriptionVal: tax.description,
+    dateVal: tax.date,
+    timeVal: tax.time,
   });
 }
 

@@ -4,8 +4,8 @@ class Tax {
 
   String _title;
   String _description;
-  DateTime _date;
-  TimeOfDay _time;
+  String _date;
+  String _time;
 
   Tax(this._title, this._description, this._date, this._time);
 
@@ -13,9 +13,9 @@ class Tax {
 
   String get description => _description;
 
-  DateTime get date => _date;
+  String get date => _date;
 
-  TimeOfDay get time => _time;
+  String get time => _time;
 
 
 }
