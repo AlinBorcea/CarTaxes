@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:car_taxes/app_strings.dart';
+import 'package:car_taxes/extra/app_strings.dart';
 import 'package:car_taxes/car/car.dart';
 import 'package:car_taxes/tax/tax.dart';
 

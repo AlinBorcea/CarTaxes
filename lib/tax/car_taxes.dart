@@ -1,17 +1,17 @@
 import 'package:car_taxes/database/firestore_helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:car_taxes/app_strings.dart';
-import 'package:car_taxes/app_colors.dart';
+import 'package:car_taxes/extra/app_strings.dart';
+import 'package:car_taxes/extra/app_colors.dart';
 import 'package:car_taxes/car/car.dart';
 import 'package:flutter/material.dart';
 import 'tax_editor.dart';
 import 'tax.dart';
 
 class CarTaxes extends StatefulWidget {
-  CarTaxes(this._car, this._appColor);
+  CarTaxes(this._car, this._theme);
 
   final Car _car;
-  final Color _appColor;
+  final AppTheme _theme;
 
   @override
   State createState() => CarTaxesState();
@@ -36,6 +36,7 @@ class CarTaxesState extends State<CarTaxes> {
                 onPressed: () {
                   deleteCar(widget._car.name);
                   Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                 },
               ),
             ],
@@ -46,10 +47,10 @@ class CarTaxesState extends State<CarTaxes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: chillWhite,
+      backgroundColor: widget._theme.background,
       appBar: AppBar(
         title: Text('Taxes for ${widget._car.brand} ${widget._car.name}'),
-        backgroundColor: widget._appColor,
+        backgroundColor: widget._theme.mainColor,
         actions: <Widget>[
           FlatButton(
             child: Icon(Icons.delete_forever),
@@ -76,9 +77,14 @@ class CarTaxesState extends State<CarTaxes> {
                       snapshot.data.documents.map((DocumentSnapshot document) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return EditTax(widget._car.name, 'Edit tax',
-                              widget._appColor, Tax(document[titleVal], document[descriptionVal], document[dateVal], document[titleVal]));
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return EditTax(
+                              widget._car.name,
+                              'Edit tax',
+                              widget._theme,
+                              Tax(document[titleVal], document[descriptionVal],
+                                  document[dateVal], document[titleVal]));
                         }));
                       },
                       child: Card(
@@ -124,7 +130,7 @@ class CarTaxesState extends State<CarTaxes> {
           context,
           MaterialPageRoute(
               builder: (context) => EditTax(
-                  widget._car.name, 'Add task', widget._appColor, null)),
+                  widget._car.name, 'Add task', widget._theme, null)),
         ),
       ),
     );

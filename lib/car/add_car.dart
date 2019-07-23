@@ -1,13 +1,14 @@
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:car_taxes/database/firestore_helper.dart';
-import 'package:car_taxes/app_colors.dart';
+import 'package:car_taxes/extra/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:car_taxes/extra/utils.dart';
 import 'car.dart';
 
 class AddCar extends StatefulWidget {
-  AddCar(this._appColor);
+  AddCar(this._theme);
 
-  final Color _appColor;
+  final AppTheme _theme;
 
   @override
   State createState() => _AddCarState();
@@ -49,10 +50,10 @@ class _AddCarState extends State<AddCar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: chillWhite,
+      backgroundColor: widget._theme.background,
       appBar: AppBar(
         title: Text('Add car'),
-        backgroundColor: widget._appColor,
+        backgroundColor: widget._theme.mainColor,
       ),
       body: Center(
         child: ListView(
@@ -83,7 +84,7 @@ class _AddCarState extends State<AddCar> {
             RaisedButton(
               child: Text('Pick color'),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-              color: widget._appColor,
+              color: widget._theme.mainColor,
               textColor: Colors.white,
               onPressed: () {
                 displayDialog();
@@ -92,7 +93,7 @@ class _AddCarState extends State<AddCar> {
             RaisedButton(
               child: Text('Save car'),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-              color: widget._appColor,
+              color: widget._theme.mainColor,
               textColor: Colors.white,
               onPressed: () {
                 addCar(Car(_brandController.text, _nameController.text,
@@ -101,6 +102,7 @@ class _AddCarState extends State<AddCar> {
                 _nameController.text = '';
                 _yearController.text = '';
                 _carColor = Colors.blue;
+                displayToast(widget._theme, 'Car was added!');
               },
             ),
           ],

@@ -1,15 +1,15 @@
 import 'package:car_taxes/database/firestore_helper.dart';
-import 'package:car_taxes/app_colors.dart';
+import 'package:car_taxes/extra/app_colors.dart';
 import 'package:car_taxes/car/car.dart';
 import 'package:flutter/material.dart';
 import 'tax.dart';
 
 class EditTax extends StatefulWidget {
-  EditTax(this._collectionName, this._appBarTitle, this._appColor, this._tax);
+  EditTax(this._collectionName, this._appBarTitle, this._theme, this._tax);
 
   final String _collectionName;
   final String _appBarTitle;
-  final Color _appColor;
+  final AppTheme _theme;
   final Tax _tax;
 
   @override
@@ -38,10 +38,10 @@ class EditTaxState extends State<EditTax> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: chillWhite,
+      backgroundColor: widget._theme.background,
       appBar: AppBar(
         title: Text(widget._appBarTitle),
-        backgroundColor: widget._appColor,
+        backgroundColor: widget._theme.mainColor,
       ),
       body: Container(
         child: ListView(
@@ -62,19 +62,19 @@ class EditTaxState extends State<EditTax> {
             RaisedButton(
               child: Text('Date: ${getDate(_date.toString())}'),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-              color: widget._appColor,
+              color: widget._theme.mainColor,
               onPressed: () => selectDate(context),
             ),
             RaisedButton(
               child: Text('Time: ${getTime(_time.toString())}'),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-              color: widget._appColor,
+              color: widget._theme.mainColor,
               onPressed: () => selectTime(context),
             ),
             RaisedButton(
               child: Text((widget._appBarTitle == 'Add task' ? widget._appBarTitle : 'Update tax')),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-              color: widget._appColor,
+              color: widget._theme.mainColor,
               onPressed: () {
 
                 if (widget._tax == null)

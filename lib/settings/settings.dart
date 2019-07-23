@@ -1,10 +1,14 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:car_taxes/app_strings.dart';
-import 'package:car_taxes/app_colors.dart';
+import 'package:car_taxes/extra/app_strings.dart';
+import 'package:car_taxes/extra/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:car_taxes/main.dart';
 
 class Settings extends StatefulWidget {
+  Settings(this._theme);
+
+  final AppTheme _theme;
+
   @override
   State createState() => _SettingsState();
 }
@@ -12,6 +16,25 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   Color _appColor;
   int _colorId;
+
+  @override
+  void initState() {
+    super.initState();
+    _appColor = widget._theme.mainColor;
+
+    if (_appColor == Colors.blue)
+      _colorId = 0;
+
+    else if (_appColor == Colors.green)
+      _colorId = 1;
+
+    else if (_appColor == Colors.red)
+      _colorId = 2;
+
+    else if (_appColor == Colors.amber)
+      _colorId = 3;
+
+  }
 
   setAppColor(int id) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -38,10 +61,10 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: chillWhite,
+      backgroundColor: widget._theme.background,
       appBar: AppBar(
         title: Text('Themes'),
-        backgroundColor: _appColor,
+        backgroundColor: widget._theme.mainColor,
       ),
       body: Center(
         child: Column(
