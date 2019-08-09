@@ -4,7 +4,7 @@ import 'package:car_taxes/extra/app_colors.dart';
 import 'package:car_taxes/settings/settings.dart';
 import 'package:car_taxes/extra/app_strings.dart';
 import 'package:car_taxes/tax/car_taxes.dart';
-import 'add_car.dart';
+import 'car_editor.dart';
 import 'car.dart';
 
 class Cars extends StatefulWidget {

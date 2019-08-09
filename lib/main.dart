@@ -4,14 +4,14 @@ import 'car/owner_cars.dart';
 
 main() async {
 
-  Color _appColor = await getCurrentColor();
-  Color textColor = await getTextColor(_appColor);
+  Color appColor = await getCurrentColor();
+  Color textColor = await getTextColor(appColor);
 
   runApp(MaterialApp(
     title: 'Car taxes',
     theme: ThemeData(
-      primarySwatch: _appColor,
+      primarySwatch: appColor,
     ),
-    home: Cars(AppTheme(_appColor, textColor, getBackground(false))),
+    home: Cars(AppTheme(appColor, textColor, getBackground(false))),
   ));
 }
