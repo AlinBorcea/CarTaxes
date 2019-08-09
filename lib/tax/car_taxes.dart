@@ -1,6 +1,7 @@
 import 'package:car_taxes/database/firestore_helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:car_taxes/extra/app_strings.dart';
+import 'package:car_taxes/extra/app_strings.dart';
 import 'package:car_taxes/extra/app_colors.dart';
 import 'package:car_taxes/car/car.dart';
 import 'package:flutter/material.dart';
@@ -74,47 +75,30 @@ class CarTaxesState extends State<CarTaxes> {
               default:
                 return ListView(
                   children:
-                      snapshot.data.documents.map((DocumentSnapshot document) {
+                  snapshot.data.documents.map((DocumentSnapshot document) {
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return EditTax(
-                              widget._car.name,
-                              'Edit tax',
-                              widget._theme,
-                              Tax(document[titleVal], document[descriptionVal],
-                                  document[dateVal], document[titleVal]));
-                        }));
+                              return EditTax(
+                                  widget._car.name,
+                                  'Edit tax',
+                                  widget._theme,
+                                  Tax(document[titleVal],
+                                      document[descriptionVal],
+                                      document[dateVal], document[titleVal]));
+                            }));
                       },
                       child: Card(
                         margin: EdgeInsets.all(8.00),
+                        elevation: 4.0,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4.0)),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.monetization_on,
-                              size: 64.0,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  '${document[titleVal]}',
-                                  textScaleFactor: 1.75,
-                                  textAlign: TextAlign.start,
-                                ),
-                                Text(
-                                    '${document[dateVal]}\n${document[timeVal]}',
-                                    textScaleFactor: 1.5,
-                                    textAlign: TextAlign.start),
-                                Text('${document[descriptionVal]}',
-                                    textScaleFactor: 1.25,
-                                    textAlign: TextAlign.end),
-                              ],
-                            ),
-                          ],
+                        child: ListTile(
+                          leading: Icon(Icons.donut_large, size: 48.0,),
+                          title: Text('${document.data[titleVal]}', textScaleFactor: 1.5,),
+                          subtitle: Text('${document.data[descriptionVal]}\n${document.data[timeVal]} on ${document.data[dateVal]}',
+                          textScaleFactor: 1.5,),
                         ),
                       ),
                     );
@@ -126,12 +110,14 @@ class CarTaxesState extends State<CarTaxes> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => EditTax(
-                  widget._car.name, 'Add task', widget._theme, null)),
-        ),
+        onPressed: () =>
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      EditTax(
+                          widget._car.name, 'Add task', widget._theme, null)),
+            ),
       ),
     );
   }

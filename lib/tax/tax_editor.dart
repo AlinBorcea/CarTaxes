@@ -23,6 +23,11 @@ class EditTaxState extends State<EditTax> {
   DateTime _date = DateTime.now();
   TimeOfDay _time = TimeOfDay.now();
 
+  String _title = '';
+  String _descr = '';
+  String _dateStr = '';
+  String _timeStr = '';
+  String _on = '';
 
   @override
   void initState() {
@@ -32,7 +37,6 @@ class EditTaxState extends State<EditTax> {
       _titleController.text = widget._tax.title;
       _descriptionController.text = widget._tax.description;
     }
-
   }
 
   @override
@@ -47,46 +51,77 @@ class EditTaxState extends State<EditTax> {
         child: ListView(
           padding: EdgeInsets.all(8.0),
           children: <Widget>[
+            Card(
+              margin: EdgeInsets.all(8.00),
+              elevation: 4.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0)),
+              child: ListTile(
+                leading: Icon(Icons.donut_large, size: 48.0,),
+                title: Text(_title, textScaleFactor: 1.5,),
+                subtitle: Text('$_descr\n$_timeStr $_on $_dateStr',
+                  textScaleFactor: 1.5,),
+              ),
+            ),
             TextField(
               decoration: InputDecoration(
                 hintText: 'Title',
               ),
               controller: _titleController,
+              onChanged: (str) {
+                setState(() {
+                  _title = str;
+                });
+              },
             ),
             TextField(
               decoration: InputDecoration(
                 hintText: 'Description',
               ),
               controller: _descriptionController,
-            ),
-            RaisedButton(
-              child: Text('Date: ${getDate(_date.toString())}'),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-              color: widget._theme.mainColor,
-              onPressed: () => selectDate(context),
+              onChanged: (str) {
+                setState(() {
+                  _descr = str;
+                });
+              },
             ),
             RaisedButton(
               child: Text('Time: ${getTime(_time.toString())}'),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
               color: widget._theme.mainColor,
+              textColor: widget._theme.textColor,
               onPressed: () => selectTime(context),
+            ),
+            RaisedButton(
+              child: Text('Date: ${getDate(_date.toString())}'),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+              color: widget._theme.mainColor,
+              textColor: widget._theme.textColor,
+              onPressed: () => selectDate(context),
             ),
             RaisedButton(
               child: Text((widget._appBarTitle == 'Add task' ? widget._appBarTitle : 'Update tax')),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
               color: widget._theme.mainColor,
+                textColor: widget._theme.textColor,
               onPressed: () {
 
-                if (widget._tax == null)
-                  addTax(widget._collectionName,
-                      Tax(_titleController.text, _descriptionController.text, getDate(_date.toString()), getTime(_time.toString())));
-                else
-                  updateTax(widget._collectionName, Tax(_titleController.text, _descriptionController.text, getDate(_date.toString()), getTime(_time.toString())));
+                if (_titleController.text != null) {
+                  if (widget._tax == null)
+                    addTax(widget._collectionName,
+                        Tax(_titleController.text, _descriptionController.text,
+                            getDate(_date.toString()),
+                            getTime(_time.toString())));
+                  else
+                    updateTax(widget._collectionName, Tax(
+                        _titleController.text, _descriptionController.text,
+                        getDate(_date.toString()), getTime(_time.toString())));
 
-                _titleController.text = '';
-                _descriptionController.text = '';
-                _date = null;
-                _time = null;
+                  Navigator.pop(context);
+
+                } else {
+
+                }
               },
             ),
           ],
@@ -107,6 +142,8 @@ class EditTaxState extends State<EditTax> {
     );
     setState(() {
       _date = picked;
+      _dateStr = getDate(_date.toString());
+      _on = 'on';
     });
   }
 
@@ -120,6 +157,7 @@ class EditTaxState extends State<EditTax> {
     );
     setState(() {
       _time = picked;
+      _timeStr = getTime(_time.toString());
     });
   }
 }
