@@ -95,7 +95,7 @@ class CarTaxesState extends State<CarTaxes> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4.0)),
                         child: ListTile(
-                          leading: Icon(Icons.donut_large, size: 48.0,),
+                          leading: Image(image: AssetImage('images/tax-icon-15.png')),
                           title: Text('${document.data[titleVal]}', textScaleFactor: 1.5,),
                           subtitle: Text('${document.data[descriptionVal]}\n${document.data[timeVal]} on ${document.data[dateVal]}',
                           textScaleFactor: 1.5,),

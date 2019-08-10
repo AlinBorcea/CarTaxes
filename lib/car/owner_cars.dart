@@ -68,9 +68,8 @@ class _CarsState extends State<Cars> {
                         ),
                         child: ListTile(
                           enabled: true,
-                          leading: Icon(
-                            Icons.directions_car,
-                            color: Color(_document[colorVal]),
+                          leading: Image(
+                            image: AssetImage('images/Passat.png'),
                           ),
                           title: Text(
                               '${_document[brandVal]} ${_document[nameVal]}'),
