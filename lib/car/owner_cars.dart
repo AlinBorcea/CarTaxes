@@ -26,7 +26,7 @@ class _CarsState extends State<Cars> {
         backgroundColor: widget._theme.mainColor,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.color_lens, color: widget._theme.background,),
+            icon: Icon(Icons.color_lens, color: widget._theme.textColor,),
             onPressed: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Settings(widget._theme)));
@@ -67,9 +67,8 @@ class _CarsState extends State<Cars> {
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         child: ListTile(
-                          enabled: true,
-                          leading: Image(
-                            image: AssetImage('images/Passat.png'),
+                          leading: Icon(
+                            Icons.directions_car, color: Colors.blue, size: 48.0,
                           ),
                           title: Text(
                               '${_document[brandVal]} ${_document[nameVal]}'),

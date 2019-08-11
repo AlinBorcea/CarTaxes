@@ -45,6 +45,43 @@ class CarTaxesState extends State<CarTaxes> {
         });
   }
 
+  Future<void> displayTaxMenu(BuildContext context, Tax tax) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+            title: Text('${tax.title}'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('View'),
+                textColor: widget._theme.mainColor,
+                onPressed: () {
+
+                },
+              ),
+              FlatButton(
+                child: Text('Edit'),
+                textColor: widget._theme.mainColor,
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                    return EditTax(widget._car.name, 'Edit tax', widget._theme, tax);
+                  }));
+                },
+              ),
+              FlatButton(
+                child: Text('Exit'),
+                textColor: widget._theme.mainColor,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+    },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +91,7 @@ class CarTaxesState extends State<CarTaxes> {
         backgroundColor: widget._theme.mainColor,
         actions: <Widget>[
           FlatButton(
-            child: Icon(Icons.delete_forever),
+            child: Icon(Icons.delete_forever, color: widget._theme.textColor,),
             onPressed: () {
               displayDeleteAlertDialog(context);
             },
@@ -78,16 +115,9 @@ class CarTaxesState extends State<CarTaxes> {
                   snapshot.data.documents.map((DocumentSnapshot document) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                              return EditTax(
-                                  widget._car.name,
-                                  'Edit tax',
-                                  widget._theme,
-                                  Tax(document[titleVal],
-                                      document[descriptionVal],
-                                      document[dateVal], document[titleVal]));
-                            }));
+                        displayTaxMenu(context, Tax(document[titleVal],
+                            document[descriptionVal],
+                            document[dateVal], document[titleVal]));
                       },
                       child: Card(
                         margin: EdgeInsets.all(8.00),
@@ -97,7 +127,7 @@ class CarTaxesState extends State<CarTaxes> {
                         child: ListTile(
                           leading: Image(image: AssetImage('images/tax-icon-15.png')),
                           title: Text('${document.data[titleVal]}', textScaleFactor: 1.5,),
-                          subtitle: Text('${document.data[descriptionVal]}\n${document.data[timeVal]} on ${document.data[dateVal]}',
+                          subtitle: Text('${document.data[timeVal]} on ${document.data[dateVal]}',
                           textScaleFactor: 1.5,),
                         ),
                       ),
@@ -116,7 +146,7 @@ class CarTaxesState extends State<CarTaxes> {
               MaterialPageRoute(
                   builder: (context) =>
                       EditTax(
-                          widget._car.name, 'Add task', widget._theme, null)),
+                          widget._car.name, 'Add tax', widget._theme, null)),
             ),
       ),
     );

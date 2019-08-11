@@ -57,7 +57,9 @@ class EditTaxState extends State<EditTax> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0)),
               child: ListTile(
-                leading: Icon(Icons.donut_large, size: 48.0,),
+                leading: Image(
+                  image: AssetImage('images/tax-icon-15.png'),
+                ),
                 title: Text(_title, textScaleFactor: 1.5,),
                 subtitle: Text('$_descr\n$_timeStr $_on $_dateStr',
                   textScaleFactor: 1.5,),
@@ -100,7 +102,7 @@ class EditTaxState extends State<EditTax> {
               onPressed: () => selectDate(context),
             ),
             RaisedButton(
-              child: Text((widget._appBarTitle == 'Add task' ? widget._appBarTitle : 'Update tax')),
+              child: Text((widget._appBarTitle == 'Add tax' ? widget._appBarTitle : 'Update tax')),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
               color: widget._theme.mainColor,
                 textColor: widget._theme.textColor,
