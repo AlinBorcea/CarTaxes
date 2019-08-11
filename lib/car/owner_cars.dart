@@ -68,7 +68,7 @@ class _CarsState extends State<Cars> {
                         ),
                         child: ListTile(
                           leading: Icon(
-                            Icons.directions_car, color: Colors.blue, size: 48.0,
+                            Icons.directions_car, color: Color(_document.data[colorVal]), size: 48.0,
                           ),
                           title: Text(
                               '${_document[brandVal]} ${_document[nameVal]}'),

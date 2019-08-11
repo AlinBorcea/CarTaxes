@@ -117,15 +117,15 @@ class CarTaxesState extends State<CarTaxes> {
                       onTap: () {
                         displayTaxMenu(context, Tax(document[titleVal],
                             document[descriptionVal],
-                            document[dateVal], document[titleVal]));
+                            document[dateVal], document[titleVal], Color(document[taxColorVal])));
                       },
                       child: Card(
-                        margin: EdgeInsets.all(8.00),
+                        margin: EdgeInsets.all(4.00),
                         elevation: 4.0,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4.0)),
                         child: ListTile(
-                          leading: Image(image: AssetImage('images/tax-icon-15.png')),
+                          leading: Image(image: AssetImage('images/tax-icon-15.png'), color: Color(document[taxColorVal])),
                           title: Text('${document.data[titleVal]}', textScaleFactor: 1.5,),
                           subtitle: Text('${document.data[timeVal]} on ${document.data[dateVal]}',
                           textScaleFactor: 1.5,),

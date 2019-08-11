@@ -1,3 +1,4 @@
+import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:car_taxes/database/firestore_helper.dart';
 import 'package:car_taxes/extra/app_colors.dart';
 import 'package:car_taxes/car/car.dart';
@@ -28,6 +29,7 @@ class EditTaxState extends State<EditTax> {
   String _dateStr = '';
   String _timeStr = '';
   String _on = '';
+  Color _color = Colors.blue;
 
   @override
   void initState() {
@@ -39,6 +41,33 @@ class EditTaxState extends State<EditTax> {
     }
   }
 
+  Future<void> _displayDialog() async {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Possible colors'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Done'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+            content: MaterialColorPicker(
+              selectedColor: _color,
+              onColorChange: (Color color) {
+                setState(() {
+                  _color = color;
+                });
+              },
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +75,14 @@ class EditTaxState extends State<EditTax> {
       appBar: AppBar(
         title: Text(widget._appBarTitle),
         backgroundColor: widget._theme.mainColor,
+        actions: <Widget>[
+          FlatButton(
+            child: Icon(Icons.delete),
+            onPressed: () {
+              deleteTax(widget._collectionName, widget._tax.title);
+            },
+          ),
+        ],
       ),
       body: Container(
         child: ListView(
@@ -59,6 +96,7 @@ class EditTaxState extends State<EditTax> {
               child: ListTile(
                 leading: Image(
                   image: AssetImage('images/tax-icon-15.png'),
+                  color: _color,
                 ),
                 title: Text(_title, textScaleFactor: 1.5,),
                 subtitle: Text('$_descr\n$_timeStr $_on $_dateStr',
@@ -102,28 +140,33 @@ class EditTaxState extends State<EditTax> {
               onPressed: () => selectDate(context),
             ),
             RaisedButton(
+              child: Text('Pick color'),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+              color: widget._theme.mainColor,
+                textColor: widget._theme.textColor,
+              onPressed: () {
+                _displayDialog();
+              },
+            ),
+            RaisedButton(
               child: Text((widget._appBarTitle == 'Add tax' ? widget._appBarTitle : 'Update tax')),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
               color: widget._theme.mainColor,
                 textColor: widget._theme.textColor,
               onPressed: () {
-
-                if (_titleController.text != null) {
                   if (widget._tax == null)
                     addTax(widget._collectionName,
                         Tax(_titleController.text, _descriptionController.text,
                             getDate(_date.toString()),
-                            getTime(_time.toString())));
-                  else
-                    updateTax(widget._collectionName, Tax(
+                            getTime(_time.toString()),
+                            _color));
+                  else {
+                    debugPrint('Updating tax');
+                    updateTax(widget._collectionName, widget._tax.title, Tax(
                         _titleController.text, _descriptionController.text,
-                        getDate(_date.toString()), getTime(_time.toString())));
-
+                        getDate(_date.toString()), getTime(_time.toString()), _color));
+                  }
                   Navigator.pop(context);
-
-                } else {
-
-                }
               },
             ),
           ],

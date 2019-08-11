@@ -6,8 +6,9 @@ class Tax {
   String _description;
   String _date;
   String _time;
+  Color _color;
 
-  Tax(this._title, this._description, this._date, this._time);
+  Tax(this._title, this._description, this._date, this._time, this._color);
 
   String get title => _title;
 
@@ -17,5 +18,6 @@ class Tax {
 
   String get time => _time;
 
+  Color get color => _color;
 
 }

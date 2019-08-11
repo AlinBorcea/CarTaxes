@@ -20,18 +20,21 @@ Future<void> addTax(String collectionName, Tax tax) async {
     descriptionVal: tax.description,
     dateVal: tax.date,
     timeVal: tax.time,
-  }).catchError((e){
+    taxColorVal: tax.color.hashCode,
+  }).catchError((e) {
     print(e);
   });
 }
 
-Future<void> updateTax(String collectionName, Tax tax) async {
+updateTax(String collectionName, String oldName, Tax tax) {
+  deleteTax(collectionName, oldName);
   Firestore.instance.collection(collectionName).document(tax.title)
-      .updateData({
+      .setData({
     titleVal: tax.title,
     descriptionVal: tax.description,
     dateVal: tax.date,
     timeVal: tax.time,
+    taxColorVal: tax.color.hashCode,
   });
 }
 
@@ -41,6 +44,10 @@ deleteCar(String name) {
     for (DocumentSnapshot ds in snapshot.documents)
       ds.reference.delete();
   });
+}
+
+deleteTax(String collName, String name) {
+  Firestore.instance.collection(collName).document(name).delete();
 }
 
 /// The structure is:

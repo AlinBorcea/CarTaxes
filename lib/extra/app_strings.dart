@@ -11,3 +11,4 @@ final String titleVal = 'Title';
 final String descriptionVal = 'Description';
 final String dateVal = 'Date';
 final String timeVal = 'TimeOfDay';
+final String taxColorVal = 'TaxColor';
