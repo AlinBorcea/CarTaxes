@@ -5,16 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:car_taxes/extra/utils.dart';
 import 'car.dart';
 
-class AddCar extends StatefulWidget {
-  AddCar(this._theme);
+class EditCar extends StatefulWidget {
+  EditCar(this._theme, this._car);
 
   final AppTheme _theme;
+  final Car _car;
 
   @override
-  State createState() => _AddCarState();
+  State createState() => _EditCarState();
 }
 
-class _AddCarState extends State<AddCar> {
+class _EditCarState extends State<EditCar> {
   final TextEditingController _brandController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();

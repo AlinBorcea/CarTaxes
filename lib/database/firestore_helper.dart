@@ -26,6 +26,17 @@ Future<void> addTax(String collectionName, Tax tax) async {
   });
 }
 
+Future<QuerySnapshot> getCarTaxes(String collName) async {
+  return await Firestore.instance.collection(collName).getDocuments();
+}
+
+updateCar(String oldName, Car newCar, List<Tax> taxes) {
+  deleteCar(oldName);
+  addCar(newCar);
+  for (int i = 0; i < taxes.length; i++)
+    addTax(newCar.name, taxes[i]);
+}
+
 updateTax(String collectionName, String oldName, Tax tax) {
   deleteTax(collectionName, oldName);
   Firestore.instance.collection(collectionName).document(tax.title)

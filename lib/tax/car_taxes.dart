@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:car_taxes/extra/app_strings.dart';
 import 'package:car_taxes/extra/app_strings.dart';
 import 'package:car_taxes/extra/app_colors.dart';
+import 'package:car_taxes/car/car_editor.dart';
 import 'package:car_taxes/car/car.dart';
 import 'package:flutter/material.dart';
 import 'tax_editor.dart';
@@ -94,6 +95,14 @@ class CarTaxesState extends State<CarTaxes> {
             child: Icon(Icons.delete_forever, color: widget._theme.textColor,),
             onPressed: () {
               displayDeleteAlertDialog(context);
+            },
+          ),
+          FlatButton(
+            child: Icon(Icons.edit, color: widget._theme.textColor,),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return EditCar(widget._theme, widget._car);
+              }));
             },
           ),
         ],

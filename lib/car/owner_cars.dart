@@ -84,7 +84,7 @@ class _CarsState extends State<Cars> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => AddCar(widget._theme))),
+            MaterialPageRoute(builder: (context) => EditCar(widget._theme, null))),
         child: Icon(Icons.add),
       ),
     );

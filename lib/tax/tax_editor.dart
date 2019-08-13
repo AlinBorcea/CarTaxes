@@ -68,6 +68,32 @@ class EditTaxState extends State<EditTax> {
         });
   }
 
+  Future<void> _displayDeleteAlertDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Are you sure you want to delete this car?'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('No'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: Text('Yes'),
+                onPressed: () {
+                  deleteTax(widget._collectionName, widget._tax.title);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +105,7 @@ class EditTaxState extends State<EditTax> {
           FlatButton(
             child: Icon(Icons.delete),
             onPressed: () {
-              deleteTax(widget._collectionName, widget._tax.title);
+              _displayDeleteAlertDialog(context);
             },
           ),
         ],
